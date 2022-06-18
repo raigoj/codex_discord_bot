@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands, tasks
 from setup import *
+from easyChallenge import *
 
 # global variables
 easyChannelId = None
@@ -22,7 +23,7 @@ async def on_ready():
 async def startEasy():
     global easyChannelId
     message_channel = client.get_channel(easyChannelId)
-    await message_channel.send("easy")
+    await easyChallenge(message_channel)
 
 # Timer function to send new hard challange every day
 @tasks.loop(seconds=15)
@@ -61,11 +62,11 @@ async def start(ctx, *arg):
 async def stop(ctx, *arg):
     if arg[0].lower() == "easy":
         startEasy.cancel()
-        msg = embedMsg("Easy challanges has been stopped")
+        msg = embedMsg("Easy challanges have been stopped")
         await ctx.send(embed=msg)
     elif arg[0].lower() == "hard":
         startHard.cancel()
-        msg = embedMsg("Hard challanges has been stopped")
+        msg = embedMsg("Hard challanges have been stopped")
         await ctx.send(embed=msg)
     else:
         msg = embedMsg("Invalid argument. Use \"!info stop\" for help")
